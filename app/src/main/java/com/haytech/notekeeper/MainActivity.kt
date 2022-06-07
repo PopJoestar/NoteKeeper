@@ -16,13 +16,11 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        
-        val dataManager = DataManager()
 
         val coursesAdapter = ArrayAdapter<CourseInfo>(
                  this,
                 android.R.layout.simple_spinner_item,
-                dataManager.courses.values.toList()
+                DataManager.courses.values.toList()
             )
 
         coursesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)

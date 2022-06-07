@@ -21,7 +21,7 @@
 
   </com.google.android.material.appbar.AppBarLayout>
 
-  <include layout="@layout/content_note_list"/>
+  <include layout="@layout/content_note_list" android:id="@+id/content_note_list"/>
 
   <com.google.android.material.floatingactionbutton.FloatingActionButton
   android:id="@+id/fab"

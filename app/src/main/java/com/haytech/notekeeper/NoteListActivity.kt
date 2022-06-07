@@ -2,6 +2,8 @@ package com.haytech.notekeeper
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.widget.ArrayAdapter
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
@@ -13,7 +15,7 @@ import com.haytech.notekeeper.databinding.ActivityNoteListBinding
 class NoteListActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
-private lateinit var binding: ActivityNoteListBinding
+    private lateinit var binding: ActivityNoteListBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,10 +29,7 @@ private lateinit var binding: ActivityNoteListBinding
 
             startActivity(activityIntent)
         }
-
-
-
-
+        binding.contentNoteList.lvNoteList.adapter = ArrayAdapter<NoteInfo>(this, android.R.layout.simple_list_item_1, DataManager.notes)
 
 
     }

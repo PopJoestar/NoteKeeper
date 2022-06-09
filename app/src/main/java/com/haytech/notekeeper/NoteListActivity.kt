@@ -2,14 +2,10 @@ package com.haytech.notekeeper
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
+import android.view.Menu
 import android.widget.ArrayAdapter
-import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
 import com.haytech.notekeeper.databinding.ActivityNoteListBinding
 
 class NoteListActivity : AppCompatActivity() {
@@ -24,15 +20,27 @@ class NoteListActivity : AppCompatActivity() {
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
 
-        binding.fab.setOnClickListener {
-            val activityIntent = Intent(this, MainActivity::class.java)
+        with(binding) {
+            fab.setOnClickListener {
+                val activityIntent = Intent(this@NoteListActivity, MainActivity::class.java)
 
-            startActivity(activityIntent)
+                startActivity(activityIntent)
+
+            }
+            contentNoteList.lvNoteList.adapter = ArrayAdapter<NoteInfo>(
+                this@NoteListActivity,
+                android.R.layout.simple_list_item_1,
+                DataManager.notes
+            )
+
+            contentNoteList.lvNoteList.setOnItemClickListener { _, _, position, _ ->
+                val activityIntent = Intent(this@NoteListActivity, MainActivity::class.java)
+                activityIntent.putExtra(EXTRA_NOTE_POSITION, position)
+
+                startActivity(activityIntent)
+            }
         }
-        binding.contentNoteList.lvNoteList.adapter = ArrayAdapter<NoteInfo>(this, android.R.layout.simple_list_item_1, DataManager.notes)
-
 
     }
-
 
 }

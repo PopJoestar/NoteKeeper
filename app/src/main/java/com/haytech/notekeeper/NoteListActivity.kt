@@ -2,7 +2,6 @@ package com.haytech.notekeeper
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.Menu
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.ui.AppBarConfiguration
@@ -35,12 +34,17 @@ class NoteListActivity : AppCompatActivity() {
 
             contentNoteList.lvNoteList.setOnItemClickListener { _, _, position, _ ->
                 val activityIntent = Intent(this@NoteListActivity, MainActivity::class.java)
-                activityIntent.putExtra(EXTRA_NOTE_POSITION, position)
+                activityIntent.putExtra(NOTE_POSITION, position)
 
                 startActivity(activityIntent)
             }
         }
 
+    }
+
+    override fun onResume() {
+        (binding.contentNoteList.lvNoteList.adapter as ArrayAdapter<NoteInfo>).notifyDataSetChanged()
+        super.onResume()
     }
 
 }

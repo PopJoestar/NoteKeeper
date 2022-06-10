@@ -4,12 +4,8 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.ArrayAdapter
-import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
 import com.haytech.notekeeper.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -37,12 +33,16 @@ class MainActivity : AppCompatActivity() {
         with(binding) {
             contentMain.spCourses.adapter = coursesAdapter
 
-            notePosition = intent.getIntExtra(
-                com.haytech.notekeeper.EXTRA_NOTE_POSITION,
-                com.haytech.notekeeper.POSITION_NOT_SET
+            notePosition = savedInstanceState?.getInt(NOTE_POSITION, POSITION_NOT_SET) ?: intent.getIntExtra(
+                NOTE_POSITION,
+                POSITION_NOT_SET
             )
 
-            if (notePosition != com.haytech.notekeeper.POSITION_NOT_SET) displayNote()
+            if (notePosition != POSITION_NOT_SET) displayNote()
+            else {
+                DataManager.notes.add(NoteInfo())
+                notePosition = DataManager.notes.lastIndex
+            }
 
         }
 
@@ -75,6 +75,27 @@ class MainActivity : AppCompatActivity() {
         }
 
         return super.onPrepareOptionsMenu(menu)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        saveNote()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState?.putInt(NOTE_POSITION, notePosition)
+    }
+
+    private fun saveNote() {
+        if (notePosition == POSITION_NOT_SET) return
+
+        val note = DataManager.notes[notePosition]
+        with(binding) {
+            note.title = contentMain.etNoteTitle.text.toString()
+            note.text = contentMain.etNoteText.text.toString()
+            note.course  = contentMain.spCourses.selectedItem as CourseInfo
+        }
     }
 
     private fun showNextNote() {
